@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="../css/output.css" />
+
+    <title>
+        Password App
+    </title>
+</head>
+<body>
+<header class="h-12 w-full flex items-center justify-between border-b border-b-[#90909030] bg-[#141414]">
+    <div class="p-6 bg-transparent">
+        <a href="./index.html" class="bg-transparent">
+            <img src="../assets/imgs/logo.png" alt="logo" width="32" height="32" class="bg-transparent select-none" />
+        </a>
+    </div>
+
+    <div class="w-full draggable h-full bg-transparent flex items-center justify-between">
+        <h3 class="bg-transparent text-[#90909070] select-none font-semibold">
+            PASSWORDS
+        </h3>
+    </div>
+
+    <div class="flex items-center justify-center gap-x-2 p-6 bg-transparent">
+        <button id="minimizeWindow" class="p-[2px] rounded-sm border border-[#90909030] bg-[#101010] cursor-pointer self-center">
+            <img src="../assets/icons/minimize.svg" alt="close" width="32" height="32" class="bg-transparent select-none" />
+        </button>
+
+        <button id="maximizeWindow" class="p-[2px] rounded-sm border border-[#90909030] bg-[#101010] cursor-pointer select-none">
+            <img src="../assets/icons/maximize.svg" alt="close" width="32" height="32" class="bg-transparent self-center" />
+        </button>
+
+        <button id="closeWindow" class="p-[2px] rounded-sm border border-[#90909030] bg-[#101010] cursor-pointer select-none">
+            <img src="../assets/icons/close.svg" alt="close" width="32" height="32" class="bg-transparent select-none" />
+        </button>
+    </div>
+</header>
+
+<main class="w-full h-[100dvh] bg-transparent flex">
+    <aside class="bg-[#141414] min-w-16 w-16 h-full flex flex-col items-center gap-y-2 p-4 border-r border-[#90909030]">
+        <a href="./list.html" class="p-1 rounded-sm border border-[#90909030] bg-[#101010] cursor-pointer select-none">
+            <img src="../assets/icons/list.svg" alt="close" width="32" height="32" class="bg-transparent select-none" />
+        </a>
+
+        <a href="./generate.html" class="p-1 rounded-sm border border-[#90909030] bg-[#101010] cursor-pointer select-none">
+            <img src="../assets/icons/generate.svg" alt="close" width="32" height="32" class="bg-transparent select-none" />
+        </a>
+    </aside>
+
+    <section class="bg-transparent w-full h-full">
+
+    </section>
+</main>
+
+<script src="../js/window/buttons.js" type="module"></script>
+</body>
+</html>
