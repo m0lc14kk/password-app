@@ -38,7 +38,7 @@ if (decrementButton) {
 }
 
 if (passwordsAmountInput) {
-    passwordsAmountInput.addEventListener("input", () => {
+    passwordsAmountInput.addEventListener("change", () => {
         const currentAmount = +(passwordsAmountInput?.value || 0);
         passwordsAmountInput.value = Math.min(20, Math.max(currentAmount, 1));
     })
@@ -47,7 +47,7 @@ if (passwordsAmountInput) {
 if (incrementLengthButton) {
     incrementLengthButton.addEventListener("click", () => {
         const currentAmount = +(passwordsLengthInput?.value || 0);
-        if (currentAmount < 255) {
+        if (currentAmount < 64) {
             passwordsLengthInput.value = currentAmount + 1;
         }
     })
@@ -63,9 +63,9 @@ if (decrementLengthButton) {
 }
 
 if (passwordsLengthInput) {
-    passwordsLengthInput.addEventListener("input", () => {
+    passwordsLengthInput.addEventListener("change", () => {
         const currentAmount = +(passwordsLengthInput?.value || 0);
-        passwordsLengthInput.value = Math.min(255, Math.max(currentAmount, 8));
+        passwordsLengthInput.value = Math.min(64, Math.max(currentAmount, 8));
     })
 }
 
@@ -74,6 +74,7 @@ if (generatePasswords) {
         const currentAmount = +(passwordsAmountInput?.value || 0);
 
         generatedPasswords.innerHTML = "";
+        generatedPasswords.classList.remove("list-disc");
 
         const randomCharacters = [];
 
@@ -85,17 +86,26 @@ if (generatePasswords) {
         if (randomCharacters.length === 0) {
             generatedPasswords.innerHTML = `<p class="bg-transparent font-medium text-[#909090]">Invalid options of a password generation. Select at least one option to generate your password.</p>`;
             return;
-        };
+        }
+
+        generatedPasswords.innerHTML += `<p class="bg-transparent font-medium text-[#909090] pb-1">Click on a password to copy it.</p>`;
 
         for (let i = 0; i < currentAmount; i++) {
             let generatedPassword = "";
 
-            for (let j = 0; j < 16; j++)
+            for (let j = 0; j < passwordsLengthInput.value; j++)
                 generatedPassword += randomCharacters[Math.floor(Math.random() * randomCharacters.length)];
 
-            generatedPasswords.innerHTML += `<li class="bg-transparent" onclick="copyToClipboard(${generatedPassword})">
-                ${generatedPassword}
-            </li>`;
-        };
+            const liElement = document.createElement("li");
+            liElement.textContent = `${generatedPassword.slice(0, 40)}${generatedPassword.length > 40 ? "..." : ""}`;
+            liElement.onclick = () => {
+                copyToClipboard(generatedPassword);
+            };
+
+            liElement.classList.add("bg-transparent", "marker:text-[#909090]", "hover:text-[#6868DF]", "text-[#909090]", "duration-150", "cursor-pointer", "font-semibold");
+
+            generatedPasswords.classList.add("list-disc");
+            generatedPasswords.appendChild(liElement);
+        }
     })
 }

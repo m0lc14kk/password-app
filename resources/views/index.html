@@ -42,16 +42,52 @@
         <main class="w-full h-[100dvh] bg-transparent flex">
             <aside class="bg-[#141414] min-w-16 w-16 h-full flex flex-col items-center gap-y-2 p-4 border-r border-[#90909030]">
                 <a href="./list.html" class="p-1 rounded-sm border border-[#90909030] bg-[#101010] cursor-pointer select-none">
-                    <img src="../assets/icons/list.svg" alt="close" width="32" height="32" class="bg-transparent select-none" />
+                    <img src="../assets/icons/list.svg" alt="list" width="32" height="32" class="bg-transparent select-none" />
                 </a>
 
                 <a href="./generate.html" class="p-1 rounded-sm border border-[#90909030] bg-[#101010] cursor-pointer select-none">
-                    <img src="../assets/icons/generate.svg" alt="close" width="32" height="32" class="bg-transparent select-none" />
+                    <img src="../assets/icons/generate.svg" alt="generate" width="32" height="32" class="bg-transparent select-none" />
                 </a>
             </aside>
 
-            <section class="bg-transparent w-full h-full">
+            <section class="bg-transparent w-full h-full p-6">
+                <h1 class="bg-transparent">
+                    Password App
+                </h1>
 
+                <p class="text-[#909090] font-semibold bg-transparent">
+                    A new home for your passwords.
+                </p>
+
+                <nav class="bg-transparent grid gap-2 place-items-start w-full pt-4">
+                    <a href="list.html" class="bg-[#202020] hover:bg-[#272727] transition-all duration-150 rounded-md py-6 px-6 flex items-center w-full lg:w-[50%]">
+                        <img src="../assets/icons/list.svg" alt="list" width="40" height="40" class="bg-transparent select-none" />
+
+                        <div class="bg-transparent flex flex-col pl-4 text-gray-300">
+                            <h1 class="text-lg font-semibold tracking-wide bg-transparent">
+                                PASSWORDS
+                            </h1>
+
+                            <p class="text-sm text-[#909090] font-semibold bg-transparent">
+                                Add, manage or delete your passwords.
+                            </p>
+                        </div>
+                    </a>
+
+                    <a href="generate.html" class="bg-[#202020] hover:bg-[#272727] transition-all duration-150 rounded-md py-6 px-6 flex items-center w-full lg:w-[50%]">
+                        <img src="../assets/icons/generate.svg" alt="list" width="40" height="40" class="bg-transparent select-none" />
+
+                        <div class="bg-transparent flex flex-col pl-4 text-gray-300">
+                            <h1 class="text-lg font-semibold tracking-wide bg-transparent">
+                                GENERATOR
+                            </h1>
+
+                            <p class="text-sm text-[#909090] font-semibold bg-transparent">
+                                Generate your new password.
+                            </p>
+                        </div>
+                    </a>
+                </nav>
             </section>
         </main>
 

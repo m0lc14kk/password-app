@@ -12,10 +12,27 @@
     h1, h2, h3, h4, h5, h6 {
         @apply font-bold;
     }
+
+    ::-webkit-scrollbar {
+        @apply w-1;
+    }
+
+    ::-webkit-scrollbar-track {
+        @apply rounded-none;
+        box-shadow: inset 0 0 5px rgba(255, 255, 255, 0);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        @apply bg-[#6868DF] rounded-none;
+    }
 }
 
 @layer utilities {
     .draggable {
         -webkit-app-region: drag;
+    }
+
+    .list-disc {
+        list-style-type: disc;
     }
 }

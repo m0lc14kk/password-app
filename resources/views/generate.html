@@ -49,7 +49,7 @@
                 </a>
             </aside>
 
-            <section class="bg-transparent w-full h-full p-6">
+            <section class="bg-transparent w-full h-full p-6 overflow-x-hidden overflow-y-auto">
                 <h1 class="bg-transparent uppercase">
                     Options
                 </h1>
@@ -93,7 +93,7 @@
                         -
                     </button>
 
-                    <input type="number" id="passwordsLengthInput" class="text-center rounded-md p-1 border border-[#90909030] duration-150 focus:border-[#90909050] outline-none bg-[#141414] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" value="12" min="8" max="255" maxlength="3" />
+                    <input type="number" id="passwordsLengthInput" class="text-center rounded-md p-1 border border-[#90909030] duration-150 focus:border-[#90909050] outline-none bg-[#141414] [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none" value="12" min="8" max="64" maxlength="2" />
 
                     <button id="incrementLengthButton" class="py-1 px-3 text-center bg-[#4040BF] duration-150 hover:bg-[#6868DF] rounded-sm cursor-pointer font-medium select-none font-mono">
                         +
@@ -130,8 +130,8 @@
                     Result
                 </h1>
 
-                <ul class="w-full flex flex-col gap-y-1" id="generatedPasswords">
-
+                <ul class="w-full flex flex-col gap-y-1 list-disc marker:text-[#909090]" id="generatedPasswords">
+                    <p class="bg-transparent font-medium text-[#909090]">Generated passwords will be shown there.</p>
                 </ul>
             </section>
         </main>
