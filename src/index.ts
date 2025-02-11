@@ -1,6 +1,7 @@
 import { app, BrowserWindow } from "electron";
 import { DesktopWindow } from "./globals/DesktopWindow";
 import { ipcMain } from "electron";
+import { PasswordHashing } from "./globals/PasswordHashing";
 
 class MainApplication {
     private constructor() {};
