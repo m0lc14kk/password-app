@@ -1,7 +1,8 @@
 import { contextBridge, ipcRenderer } from "electron";
 
 contextBridge.exposeInMainWorld("electron", {
-    closeWindow: () => ipcRenderer.send("closeWindow"),
-    minimizeWindow: () => ipcRenderer.send("minimizeWindow"),
-    maximizeWindow: () => ipcRenderer.send("maximizeWindow"),
+    closeWindow: (): void => ipcRenderer.send("closeWindow"),
+    minimizeWindow: (): void => ipcRenderer.send("minimizeWindow"),
+    maximizeWindow: (): void => ipcRenderer.send("maximizeWindow"),
+    fetchPasswords: (): void => ipcRenderer.send("fetchPasswords"),
 });

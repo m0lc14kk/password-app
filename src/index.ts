@@ -1,7 +1,8 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcRenderer } from "electron";
 import { DesktopWindow } from "./globals/DesktopWindow";
 import { ipcMain } from "electron";
 import { PasswordHashing } from "./globals/PasswordHashing";
+import { appDatabase } from "./globals/AppDatabase";
 
 class MainApplication {
     private constructor() {};
@@ -42,6 +43,20 @@ class MainApplication {
                 window.minimize()
             }
         })
+
+        ipcMain.on("fetchPasswords", () => {
+            const result: Array<{
+                id: number,
+                username: string,
+                password: string,
+                type: number
+            }> = appDatabase.prepare("SELECT * FROM passwords").all() as any[];
+
+            ipcRenderer.send("fetchPasswordsResult", result.map(({ password, ...rest }) => ({
+                password: PasswordHashing.decrypt(password),
+                ...rest
+            })));
+        });
     }
 }
 
