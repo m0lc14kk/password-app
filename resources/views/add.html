@@ -20,7 +20,7 @@
 
     <div class="w-full draggable h-full bg-transparent flex items-center justify-between">
         <h3 class="bg-transparent text-[#90909070] select-none font-semibold">
-            PASSWORDS
+            ADD PASSWORD
         </h3>
     </div>
 
@@ -56,19 +56,29 @@
         </a>
     </aside>
 
-    <section class="bg-transparent w-full h-full p-6">
-        <h1 class="bg-transparent uppercase">
-            Passwords
-        </h1>
+    <section class="bg-transparent w-full h-full p-6" id="management">
+        <h1 class="bg-transparent">DETAILS</h1>
+        <p class="text-[#909090] font-semibold bg-transparent">Details about a new password.</p>
 
-        <p class="bg-transparent font-medium text-[#909090]">Your passwords are listed below here.</p>
+        <label for="username" class="text-[#909090] font-semibold bg-transparent pt-4 flex items-center gap-x-1 pb-2">
+            USERNAME
+        </label>
+        <input name="username" type="text" value="${username}" class="bg-transparent p-2 outline-none border-[#90909030] border rounded-md font-medium max-lg:w-full w-[50%]" maxlength="64" minlength="3" id="username" />
 
-        <div class="bg-transparent grid gap-2 place-items-start w-full pt-4 overflow-x-hidden pb-8" id="passwords">
+        <label for="password" class="text-[#909090] font-semibold bg-transparent pt-4 flex items-center gap-x-1 pb-2">
+            PASSWORD
+        </label>
+        <input name="password" type="text" value="${password}" class="bg-transparent p-2 outline-none border-[#90909030] border rounded-md font-medium max-lg:w-full w-[50%]" maxlength="64" minlength="3" id="password" />
+
+        <div class="bg-transparent flex max-lg:flex-col max-lg:w-full w-[50%] gap-2 pt-4">
+            <button id="savePassword" class="bg-[#4040BF] duration-150 hover:bg-[#6868DF] text-center rounded-sm cursor-pointer py-1 w-full font-semibold">
+                Add Password
+            </button>
         </div>
     </section>
 </main>
 
 <script src="../js/window/buttons.js" type="module"></script>
-<script src="../js/pages/list.js" type="module"></script>
+<script src="../js/pages/add.js" type="module"></script>
 </body>
 </html>

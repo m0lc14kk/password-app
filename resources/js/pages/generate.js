@@ -13,10 +13,10 @@ const allowedUppercaseLetters = document.getElementById("uppercaseLettersOption"
 const allowedNumbers = document.getElementById("numbersOption");
 const allowedSpecialCharacters = document.getElementById("specialCharactersOption");
 
-const copyToClipboard = (element) => {
+const copyToClipboard = async (element) => {
     try {
-        window.navigator.clipboard.writeText(element);
-    } catch {};
+        await window.navigator.clipboard.writeText(element);
+    } catch {}
 };
 
 if (incrementButton) {

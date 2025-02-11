@@ -7,11 +7,44 @@ const typeIdToIcon = [
 ]
 
 let allPasswords = [];
+window.addEventListener("load", () => {
+    localStorage.clear()
+})
+
+const addPasswordButtonToBottom = () => {
+    document.querySelector("section").innerHTML += `
+        <div class="bg-transparent max-lg:w-full w-[50%] pt-4 flex items-center justify-center">
+            <a href="./add.html" class="bg-[#4040BF] duration-150 hover:bg-[#6868DF] text-center rounded-sm cursor-pointer py-1 w-full font-semibold">
+                Save Password
+            </a>
+        </div>
+    `;
+}
 
 window.electron.fetchPasswords().then((passwords) => {
     allPasswords = passwords;
 
-    for (const { password, username, type, id } of passwords) {
+    if (passwords.length === 0) {
+        const sectionElement = document.querySelector("section");
+        sectionElement.innerHTML = `
+            <h1 class="bg-transparent">
+                PASSWORDS
+            </h1>
+
+             <p class="text-[#909090] font-semibold bg-transparent">
+                You have not saved any data with out app yet.
+            </p>
+        `;
+
+        addPasswordButtonToBottom();
+        return;
+    }
+
+    for (const { username, type, id, password } of passwords) {
+        localStorage.setItem(`${id}`, JSON.stringify({
+            username, type, password
+        }));
+
         passwordsContainer.innerHTML += `
             <a href="./manage.html?id=${id}" class="bg-[#202020] hover:bg-[#272727] transition-all duration-150 rounded-md py-6 px-6 flex items-center w-full lg:w-[50%]">
                 <img src="../assets/icons/media/${typeIdToIcon[type]}.svg" alt="list" width="40" height="40" class="bg-transparent select-none" />
@@ -22,11 +55,11 @@ window.electron.fetchPasswords().then((passwords) => {
                     </h1>
 
                     <p class="text-sm text-[#909090] font-semibold bg-transparent">
-                        Password: ${password}
+                        Click to view details.
                     </p>
                 </div>
             </a>`;
     }
-}).catch((error) => {
-    console.error("Error fetching passwords:", error);
-});
+
+    addPasswordButtonToBottom();
+}).catch(() => {});

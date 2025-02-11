@@ -51,6 +51,25 @@ class MainApplication {
             }
         })
 
+        ipcMain.on("deleteAllPasswords", () => {
+            appDatabase.run("DELETE FROM passwords;");
+        })
+
+        ipcMain.on("deletePassword", (_, id) => {
+            const preparedQuery = appDatabase.prepare("DELETE FROM passwords WHERE id = ?");
+            preparedQuery.run(id);
+        })
+
+        ipcMain.on("updatePassword", (_, id, options) => {
+            const preparedQuery = appDatabase.prepare("UPDATE passwords SET username = ?, password = ?, type = ? WHERE id = ?");
+            preparedQuery.run(
+                options.username,
+                PasswordHashing.encrypt(options.password),
+                options.type,
+                id
+            );
+        });
+
         ipcMain.handle("fetchPasswords", async () => {
             const sql = "SELECT * FROM passwords ORDER BY id";
             const finalResult: Array<{ id: number; username: string; password: string; type: number }> = [];
