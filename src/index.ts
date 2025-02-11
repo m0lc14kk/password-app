@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcRenderer } from "electron";
+import { app, BrowserWindow } from "electron";
 import { DesktopWindow } from "./globals/DesktopWindow";
 import { ipcMain } from "electron";
 import { PasswordHashing } from "./globals/PasswordHashing";
@@ -9,12 +9,19 @@ class MainApplication {
 
     public static init(): void {
         app.on("ready", this.onAppReady);
+        app.on("window-all-closed", this.onWindowAllClosed)
 
         this.activateInterProcessCommunication();
     }
 
     public static async onAppReady(): Promise<void> {
         await DesktopWindow.createWindow();
+    }
+
+    public static async onWindowAllClosed(): Promise<void> {
+        if (process.platform !== "darwin") {
+            app.quit();
+        }
     }
 
     public static activateInterProcessCommunication(): void {
@@ -44,18 +51,27 @@ class MainApplication {
             }
         })
 
-        ipcMain.on("fetchPasswords", () => {
-            const result: Array<{
-                id: number,
-                username: string,
-                password: string,
-                type: number
-            }> = appDatabase.prepare("SELECT * FROM passwords").all() as any[];
+        ipcMain.handle("fetchPasswords", async () => {
+            const sql = "SELECT * FROM passwords ORDER BY id";
+            const finalResult: Array<{ id: number; username: string; password: string; type: number }> = [];
 
-            ipcRenderer.send("fetchPasswordsResult", result.map(({ password, ...rest }) => ({
-                password: PasswordHashing.decrypt(password),
-                ...rest
-            })));
+            return new Promise((resolve, reject) => {
+                appDatabase.all(sql, [], (err, rows: any[]) => {
+                    if (err) {
+                        reject(false);
+                        return;
+                    }
+
+                    rows.forEach(({ password, ...rest }) => {
+                        finalResult.push({
+                            password: PasswordHashing.decrypt(password),
+                            ...rest
+                        });
+                    });
+
+                    resolve(finalResult);
+                });
+            });
         });
     }
 }
