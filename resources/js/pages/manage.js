@@ -171,9 +171,15 @@ const viewPassword = () => {
     });
 
     document.getElementById("savePassword").addEventListener("click", () => {
+        const username = document.getElementById("username")?.value || "";
+        const password = document.getElementById("password")?.value || "";
+
+        if (!password || !username)
+            return;
+
         window.electron.updatePassword(passwordId, {
-            username: document.getElementById("username")?.value || "",
-            password: document.getElementById("password")?.value || "",
+            username,
+            password,
             type: document.querySelector('input[name="type"]:checked')?.value || 3,
         })
 
