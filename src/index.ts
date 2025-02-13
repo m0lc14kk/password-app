@@ -61,7 +61,10 @@ class MainApplication {
         })
 
         ipcMain.on("updatePassword", (_, id, options) => {
-            const preparedQuery = appDatabase.prepare("UPDATE passwords SET username = ?, password = ?, type = ? WHERE id = ?");
+            const preparedQuery = appDatabase.prepare(`
+                UPDATE passwords SET username = ?, password = ?, type = ? WHERE id = ?;
+            `);
+
             preparedQuery.run(
                 options.username,
                 PasswordHashing.encrypt(options.password),
@@ -69,6 +72,18 @@ class MainApplication {
                 id
             );
         });
+
+        ipcMain.on("addPassword", (_, options) => {
+            const preparedQuery = appDatabase.prepare(`
+                INSERT INTO passwords(username, password, type) VALUES (?, ?, ?)
+            `)
+
+            preparedQuery.run(
+                options.username,
+                PasswordHashing.encrypt(options.password),
+                options.type,
+            );
+        })
 
         ipcMain.handle("fetchPasswords", async () => {
             const sql = "SELECT * FROM passwords ORDER BY id";

@@ -63,15 +63,49 @@
         <label for="username" class="text-[#909090] font-semibold bg-transparent pt-4 flex items-center gap-x-1 pb-2">
             USERNAME
         </label>
-        <input name="username" type="text" value="${username}" class="bg-transparent p-2 outline-none border-[#90909030] border rounded-md font-medium max-lg:w-full w-[50%]" maxlength="64" minlength="3" id="username" />
+        <input name="username" type="text" value="" placeholder="Enter username or email." class="bg-transparent p-2 outline-none border-[#90909030] border rounded-md font-medium max-lg:w-full w-[50%]" maxlength="64" minlength="3" id="username" />
 
         <label for="password" class="text-[#909090] font-semibold bg-transparent pt-4 flex items-center gap-x-1 pb-2">
             PASSWORD
         </label>
-        <input name="password" type="text" value="${password}" class="bg-transparent p-2 outline-none border-[#90909030] border rounded-md font-medium max-lg:w-full w-[50%]" maxlength="64" minlength="3" id="password" />
+        <input name="password" type="text" value="" placeholder="Enter password." class="bg-transparent p-2 outline-none border-[#90909030] border rounded-md font-medium max-lg:w-full w-[50%]" maxlength="64" minlength="3" id="password" />
+
+        <label for="password" class="text-[#909090] font-semibold bg-transparent pt-4 flex items-center gap-x-1 pb-2">
+            TYPE
+        </label>
+
+        <div class="grid max-lg:w-full w-[50%] grid-cols-2 gap-[2px]">
+            <div class="bg-transparent flex items-center justify-start gap-x-2">
+                <input type="radio" id="type-instagram" name="type" value="0" class="cursor-pointer appearance-none border-2 border-[#909090] rounded-sm bg-[#101010] w-4 h-4 checked:bg-[#6868DF] checked:border-[#6868DF] duration-150" checked />
+                <label for="type-instagram" class="text-[#909090] font-semibold bg-transparent">
+                    Instagram
+                </label>
+            </div>
+
+            <div class="bg-transparent flex items-center justify-start gap-x-2">
+                <input type="radio" id="type-github" name="type" value="1" class="cursor-pointer appearance-none border-2 border-[#909090] rounded-sm bg-[#101010] w-4 h-4 checked:bg-[#6868DF] checked:border-[#6868DF] duration-150" />
+                <label for="type-github" class="text-[#909090] font-semibold bg-transparent">
+                    GitHub
+                </label>
+            </div>
+
+            <div class="bg-transparent flex items-center justify-start gap-x-2">
+                <input type="radio" id="type-facebook" name="type" value="2" class="cursor-pointer appearance-none border-2 border-[#909090] rounded-sm bg-[#101010] w-4 h-4 checked:bg-[#6868DF] checked:border-[#6868DF] duration-150" />
+                <label for="type-facebook" class="text-[#909090] font-semibold bg-transparent">
+                    Facebook
+                </label>
+            </div>
+
+            <div class="bg-transparent flex items-center justify-start gap-x-2">
+                <input type="radio" id="type-other" name="type" value="3" class="cursor-pointer appearance-none border-2 border-[#909090] rounded-sm bg-[#101010] w-4 h-4 checked:bg-[#6868DF] checked:border-[#6868DF] duration-150" />
+                <label for="type-other" class="text-[#909090] font-semibold bg-transparent">
+                    Other
+                </label>
+            </div>
+        </div>
 
         <div class="bg-transparent flex max-lg:flex-col max-lg:w-full w-[50%] gap-2 pt-4">
-            <button id="savePassword" class="bg-[#4040BF] duration-150 hover:bg-[#6868DF] text-center rounded-sm cursor-pointer py-1 w-full font-semibold">
+            <button id="addPassword" class="bg-[#4040BF] duration-150 hover:bg-[#6868DF] text-center rounded-sm cursor-pointer py-1 w-full font-semibold">
                 Add Password
             </button>
         </div>

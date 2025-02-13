@@ -120,6 +120,41 @@ const viewPassword = () => {
         </label>
         <input name="password" type="text" value="${password}" class="bg-transparent p-2 outline-none border-[#90909030] border rounded-md font-medium max-lg:w-full w-[50%]" maxlength="64" minlength="3" id="password" />
     
+    
+        <p class="text-[#909090] font-semibold bg-transparent pt-4 pb-2">
+            TYPE
+        </p>
+    
+        <div class="grid max-lg:w-full w-[50%] grid-cols-2 gap-[2px]">
+            <div class="bg-transparent flex items-center justify-start gap-x-2">
+                <input type="radio" id="type-instagram" name="type" value="0" class="cursor-pointer appearance-none border-2 border-[#909090] rounded-sm bg-[#101010] w-4 h-4 checked:bg-[#6868DF] checked:border-[#6868DF] duration-150" ${type === 0 ? "checked" : ""} />
+                <label for="type-instagram" class="text-[#909090] font-semibold bg-transparent">
+                    Instagram
+                </label>
+            </div>
+
+            <div class="bg-transparent flex items-center justify-start gap-x-2">
+                <input type="radio" id="type-github" name="type" value="1" class="cursor-pointer appearance-none border-2 border-[#909090] rounded-sm bg-[#101010] w-4 h-4 checked:bg-[#6868DF] checked:border-[#6868DF] duration-150" ${type === 1 ? "checked" : ""} />
+                <label for="type-github" class="text-[#909090] font-semibold bg-transparent">
+                    GitHub
+                </label>
+            </div>
+
+            <div class="bg-transparent flex items-center justify-start gap-x-2">
+                <input type="radio" id="type-facebook" name="type" value="2" class="cursor-pointer appearance-none border-2 border-[#909090] rounded-sm bg-[#101010] w-4 h-4 checked:bg-[#6868DF] checked:border-[#6868DF] duration-150" ${type === 2 ? "checked" : ""} />
+                <label for="type-facebook" class="text-[#909090] font-semibold bg-transparent">
+                    Facebook
+                </label>
+            </div>
+
+            <div class="bg-transparent flex items-center justify-start gap-x-2">
+                <input type="radio" id="type-other" name="type" value="3" class="cursor-pointer appearance-none border-2 border-[#909090] rounded-sm bg-[#101010] w-4 h-4 checked:bg-[#6868DF] checked:border-[#6868DF] duration-150" ${type === 3 ? "checked" : ""} />
+                <label for="type-other" class="text-[#909090] font-semibold bg-transparent">
+                    Other
+                </label>
+            </div>
+        </div>
+    
         <div class="bg-transparent flex max-lg:flex-col max-lg:w-full w-[50%] gap-2 pt-4">
             <button id="deletePassword" class="bg-[#702121] duration-150 hover:bg-[#993030] text-center rounded-sm cursor-pointer py-1 w-full font-semibold">
                 Delete Password
@@ -139,7 +174,7 @@ const viewPassword = () => {
         window.electron.updatePassword(passwordId, {
             username: document.getElementById("username")?.value || "",
             password: document.getElementById("password")?.value || "",
-            type: document.getElementById("type")?.value || 3,
+            type: document.querySelector('input[name="type"]:checked')?.value || 3,
         })
 
         window.location.href = "../views/list.html";
