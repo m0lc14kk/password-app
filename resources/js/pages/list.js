@@ -46,7 +46,7 @@ window.electron.fetchPasswords().then((passwords) => {
         }));
 
         passwordsContainer.innerHTML += `
-            <a href="./manage.html?id=${id}" class="bg-[#202020] hover:bg-[#272727] transition-all duration-150 rounded-md py-6 px-6 flex items-center w-full lg:w-[50%]">
+            <a href="./manage.html?id=${id}" class="bg-[#202020] hover:bg-[#272727] transition-all duration-150 rounded-md p-6 flex items-center w-full lg:w-[50%]">
                 <img src="../assets/icons/media/${typeIdToIcon[type]}.svg" alt="list" width="40" height="40" class="bg-transparent select-none" />
 
                 <div class="bg-transparent flex flex-col pl-4 text-gray-300">
