@@ -1,3 +1,7 @@
+const modalDeletePassword = document.getElementById("modalDeletePassword");
+const closeModalButton = document.getElementById("closeModal");
+const cancelModalButton = document.getElementById("cancelButton");
+const modalDeletePasswordButton = document.getElementById("deletePasswordModal");
 const sectionElement = document.getElementById("management");
 const urlOptions = window.location.search;
 let passwordId = false;
@@ -7,6 +11,27 @@ const copyToClipboard = async (element) => {
         await window.navigator.clipboard.writeText(document.getElementById(element)?.value || "");
     } catch {}
 };
+
+if (closeModalButton) {
+    closeModalButton.addEventListener("click", () => {
+        modalDeletePassword.classList.add("-left-full");
+    })
+}
+
+if (cancelModalButton) {
+    cancelModalButton.addEventListener("click", () => {
+        modalDeletePassword.classList.add("-left-full");
+    })
+}
+
+if (modalDeletePasswordButton) {
+    modalDeletePasswordButton.addEventListener("click", () => {
+        if (typeof passwordId !== "number") return;
+
+        window.electron.deletePassword(passwordId);
+        window.location.href = "../views/list.html";
+    })
+}
 
 const main = () => {
     for (const [key, value] of urlOptions.slice(1).split("&").map((pair) => pair.split("="))) {
@@ -107,13 +132,10 @@ const viewPassword = () => {
     `;
 
     document.getElementById("deletePassword").addEventListener("click", () => {
-        console.log(passwordId)
-        window.electron.deletePassword(passwordId);
-        window.location.href = "../views/list.html";
+        modalDeletePassword.classList.remove("-left-full");
     });
 
     document.getElementById("savePassword").addEventListener("click", () => {
-        console.log(passwordId)
         window.electron.updatePassword(passwordId, {
             username: document.getElementById("username")?.value || "",
             password: document.getElementById("password")?.value || "",

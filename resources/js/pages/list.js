@@ -13,9 +13,9 @@ window.addEventListener("load", () => {
 
 const addPasswordButtonToBottom = () => {
     document.querySelector("section").innerHTML += `
-        <div class="bg-transparent max-lg:w-full w-[50%] pt-4 flex items-center justify-center">
+        <div class="bg-transparent max-lg:w-full w-[50%] flex items-center justify-center ${allPasswords.length > 0 ? "" : "pt-4"}">
             <a href="./add.html" class="bg-[#4040BF] duration-150 hover:bg-[#6868DF] text-center rounded-sm cursor-pointer py-1 w-full font-semibold">
-                Save Password
+                New Password
             </a>
         </div>
     `;
