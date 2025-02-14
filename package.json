@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "start": "electron dist/index.js",
+    "start": "node ./dist/scripts/DatabaseConfiguration.js && electron dist/index.js",
     "build": "tsc",
     "tailwind": "pnpx @tailwindcss/cli -i ./resources/css/input.css -o ./resources/css/output.css --content \"./resources/views/**/*.html\" --watch"
   },

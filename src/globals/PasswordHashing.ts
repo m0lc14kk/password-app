@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import { DESKTOP_HASHING_SECRET_KEY } from "./EnvironmentVariables";
 
 class PasswordHashing {
-    private static key: Buffer = crypto.scryptSync(DESKTOP_HASHING_SECRET_KEY, 'salt', 32);
+    private static key: Buffer = crypto.scryptSync(DESKTOP_HASHING_SECRET_KEY || "a98a57a2a6d0ccff0e89d9f863af59b0ff5f710787e7f23bb8b07333c408b670", 'salt', 32);
 
     private constructor() {}
 
