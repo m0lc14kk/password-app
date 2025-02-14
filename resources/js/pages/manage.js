@@ -6,12 +6,6 @@ const sectionElement = document.getElementById("management");
 const urlOptions = window.location.search;
 let passwordId = false;
 
-const copyToClipboard = async (element) => {
-    try {
-        await window.navigator.clipboard.writeText(document.getElementById(element)?.value || "");
-    } catch {}
-};
-
 if (closeModalButton) {
     closeModalButton.addEventListener("click", () => {
         modalDeletePassword.classList.add("-left-full");
@@ -128,20 +122,20 @@ const viewPassword = () => {
         </ul>
     
         <label for="username" class="text-[#909090] font-semibold bg-transparent pt-4 flex items-center gap-x-1 pb-2">
-            <button type="button" onclick="copyToClipboard('username')" class="bg-transparent">
+            <button id="copyUsername" class="bg-transparent">
                 <img src="../assets/icons/copy.svg" alt="copy" width="24" height="24" class="bg-transparent select-none cursor-pointer" />
             </button> 
             USERNAME
         </label>
-        <input name="username" type="text" value="${username}" class="bg-transparent p-2 outline-none border-[#90909030] border rounded-md font-medium max-lg:w-full w-[50%]" maxlength="64" minlength="3" id="username" />
+        <input name="username" type="text" value="${username}" placeholder="${username}" class="bg-transparent p-2 outline-none border-[#90909030] border rounded-md font-medium max-lg:w-full w-[50%]" maxlength="64" minlength="3" id="username" />
     
         <label for="password" class="text-[#909090] font-semibold bg-transparent pt-4 flex items-center gap-x-1 pb-2">
-            <button type="button" onclick="copyToClipboard('password')" class="bg-transparent">
+            <button id="copyPassword" class="bg-transparent">
                 <img src="../assets/icons/copy.svg" alt="copy" width="24" height="24" class="bg-transparent select-none cursor-pointer" />
             </button>
             PASSWORD
         </label>
-        <input name="password" type="text" value="${password}" class="bg-transparent p-2 outline-none border-[#90909030] border rounded-md font-medium max-lg:w-full w-[50%]" maxlength="64" minlength="3" id="password" />
+        <input name="password" type="text" value="${password}" placeholder="${password}" class="bg-transparent p-2 outline-none border-[#90909030] border rounded-md font-medium max-lg:w-full w-[50%]" maxlength="64" minlength="3" id="password" />
     
     
         <p class="text-[#909090] font-semibold bg-transparent pt-4 pb-2">
@@ -224,6 +218,21 @@ const viewPassword = () => {
 
         window.location.href = "../views/list.html";
     });
+
+    const copyUsernameButton = document.getElementById("copyUsername");
+    const copyPasswordButton = document.getElementById("copyPassword");
+
+    if (copyUsernameButton) {
+        copyUsernameButton.addEventListener("click", () => {
+            window.navigator.clipboard.writeText(document.getElementById("username")?.value || "");
+        });
+    }
+
+    if (copyPasswordButton) {
+        copyPasswordButton.addEventListener("click", () => {
+            window.navigator.clipboard.writeText(document.getElementById("password")?.value || "");
+        });
+    }
 }
 
 main();
