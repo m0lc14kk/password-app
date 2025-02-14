@@ -103,6 +103,29 @@ const viewPassword = () => {
     sectionElement.innerHTML = `
         <h1 class="bg-transparent">DETAILS</h1>
         <p class="text-[#909090] font-semibold bg-transparent">Details about selected password.</p>
+        
+        <ul id="errors" class="bg-[#141414] rounded-sm border-[#90909030] border p-3 flex flex-col mt-4 max-lg:w-full lg:w-[50%] gap-y-2 hidden">
+            <li class="bg-transparent flex items-center justify-between">
+                <h3 class="bg-transparent font-semibold text-[#90909060]">
+                    ERRORS
+                </h3>
+
+                <button id="closeErrors" class="p-[2px] rounded-sm border border-[#90909030] bg-[#101010] cursor-pointer select-none">
+                    <img src="../assets/icons/close.svg" alt="close" width="16" height="16" class="bg-transparent select-none" />
+                </button>
+            </li>
+
+            <li class="bg-transparent w-full">
+                <ul class="bg-transparent flex flex-col gap-y-[2px] pl-2]">
+                    <li class="bg-transparent text-[#909090] font-semibold hidden" id="usernameError">
+                        You must provide a username or an email address.
+                    </li>
+                    <li class="bg-transparent text-[#909090] font-semibold hidden" id="passwordError">
+                        You must provide a password.
+                    </li>
+                </ul>
+            </li>
+        </ul>
     
         <label for="username" class="text-[#909090] font-semibold bg-transparent pt-4 flex items-center gap-x-1 pb-2">
             <button type="button" onclick="copyToClipboard('username')" class="bg-transparent">
@@ -166,6 +189,18 @@ const viewPassword = () => {
         </div>
     `;
 
+    const errorsContainer = document.getElementById("errors");
+    const usernameError = document.getElementById("usernameError");
+    const passwordError = document.getElementById("passwordError");
+
+    const closeErrors = document.getElementById("closeErrors");
+
+    if (closeErrors) {
+        closeErrors.addEventListener("click", () => {
+            errorsContainer.classList.add("hidden");
+        });
+    }
+
     document.getElementById("deletePassword").addEventListener("click", () => {
         modalDeletePassword.classList.remove("-left-full");
     });
@@ -174,8 +209,12 @@ const viewPassword = () => {
         const username = document.getElementById("username")?.value || "";
         const password = document.getElementById("password")?.value || "";
 
-        if (!password || !username)
+        if (!password || !username) {
+            usernameError.classList[!username ? "remove" : "add"]("hidden");
+            passwordError.classList[!password ? "remove" : "add"]("hidden");
+            errorsContainer.classList.remove("hidden");
             return;
+        }
 
         window.electron.updatePassword(passwordId, {
             username,
