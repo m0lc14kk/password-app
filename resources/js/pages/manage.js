@@ -104,13 +104,13 @@ const viewPassword = () => {
         <h1 class="bg-transparent">DETAILS</h1>
         <p class="text-[#909090] font-semibold bg-transparent">Details about selected password.</p>
         
-        <ul id="errors" class="bg-[#141414] rounded-sm border-[#90909030] border p-3 flex flex-col mt-4 max-lg:w-full lg:w-[50%] gap-y-2 hidden">
+        <ul id="errors" class="bg-[#321414] rounded-sm border-[#90909030] border p-3 flex flex-col mt-4 max-lg:w-full lg:w-[50%] gap-y-2 hidden">
             <li class="bg-transparent flex items-center justify-between">
-                <h3 class="bg-transparent font-semibold text-[#90909060]">
+                <h3 class="bg-transparent font-semibold text-[#AA909060]">
                     ERRORS
                 </h3>
 
-                <button id="closeErrors" class="p-[2px] rounded-sm border border-[#90909030] bg-[#101010] cursor-pointer select-none">
+                <button id="closeErrors" class="p-[2px] rounded-sm border border-[#90909030] bg-[#201010] cursor-pointer select-none">
                     <img src="../assets/icons/close.svg" alt="close" width="16" height="16" class="bg-transparent select-none" />
                 </button>
             </li>
