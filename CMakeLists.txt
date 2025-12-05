@@ -35,7 +35,7 @@ else()
     )
 endif()
 
-file(GLOB SRC_FILES
+file(GLOB_RECURSE SRC_FILES
     src/*.cpp
     src/*.h
 )

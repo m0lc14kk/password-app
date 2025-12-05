@@ -1,9 +1,10 @@
-#include <QApplication>
+#include "app/MainApplication.h"
 #include <QMainWindow>
 #include <QLabel>
 
 int main(int argc, char *argv[]) {
-    QApplication app(argc, argv);
+    MainApplication::init(argc, argv);
+    MainApplication *app = MainApplication::getInstance();
 
     QMainWindow window;
     window.setWindowTitle("Hello World");
@@ -14,6 +15,5 @@ int main(int argc, char *argv[]) {
     window.setCentralWidget(label);
 
     window.show();
-
-    return app.exec();
+    return app->exec();
 }
