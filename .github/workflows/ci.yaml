@@ -1,0 +1,88 @@
+name: Validate code quality and build an application.
+
+on:
+    push:
+        branches:
+            - main
+            - development
+    pull_request:
+        branches:
+            - main
+            - development
+
+defaults:
+    run:
+        working-directory: .
+        shell: bash
+
+jobs:
+    build-linux:
+        name: Validate code quality and build an application on Linux.
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository.
+              uses: actions/checkout@v6
+        
+            - name: Install dependencies.
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y qt6-base-dev qt6-tools-dev cmake build-essential libsqlite3-dev
+
+            - name: Configure CMake.
+              run: |
+                cmake -B build -S .
+
+            - name: Build.
+              run: |
+                cmake --build build --config Release
+
+            - name: Test executable exists.
+              run: |
+                test -f build/PasswordManager
+
+    build-macos:
+        name: Validate code quality and build an application on macOS.
+        runs-on: macos-latest
+        steps:
+            - name: Checkout repository.
+              uses: actions/checkout@v6
+
+            - name: Install dependencies.
+              run: |
+                brew install qt6 cmake
+
+            - name: Configure CMake.
+              run: |
+                cmake -B build -S .
+
+            - name: Build.
+              run: |
+                cmake --build build --config Release
+
+            - name: Test executable exists.
+              run: |
+                test -f build/PasswordManager
+
+    build-windows:
+        name: Validate code quality and build an application on Windows.
+        runs-on: windows-latest
+        steps:
+            - name: Checkout repository.
+              uses: actions/checkout@v6
+
+            - name: Install dependencies.
+              run: |
+                winget install -e --id Qt.Qt6
+                winget install -e --id Kitware.CMake
+
+            - name: Configure CMake.
+              run: |
+                cmake -B build -S .
+
+            - name: Build.
+              run: |
+                cmake --build build --config Release
+
+            - name: Test executable exists.
+              run: |
+                test -f build/PasswordManager
