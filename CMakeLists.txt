@@ -26,7 +26,7 @@ else()
         URL https://www.sqlite.org/2024/sqlite-amalgamation-3490100.zip
     )
     FetchContent_MakeAvailable(sqlite3)
-    
+
     add_library(SQLite3::SQLite3 STATIC
         ${sqlite3_SOURCE_DIR}/sqlite3.c
     )
