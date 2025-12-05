@@ -1,0 +1,45 @@
+# IDE files.
+/.idea/
+/.vscode/
+/.vs/
+/.cursor/
+
+# Build files.
+/build/
+/out/
+/bin/
+/lib/
+
+# CMake.
+/CMakeFiles/
+/CMakeCache.txt
+/cmake_install.cmake
+/Makefile
+/install_manifest.txt
+
+# Compilation files.
+*.o
+*.obj
+moc_*
+qrc_*
+ui_*
+
+# Qt Creator.
+*.user
+*.user.*
+*.autosave
+
+# macOS files.
+/**/.DS_Store
+/**/*.dylib
+/**/*.app
+
+# Windows files.
+/**/*.exe
+/**/*.dll
+/**/*.pdb
+/**/*.lib
+
+# Linux files.
+/**/*.so
+/**/*.a
