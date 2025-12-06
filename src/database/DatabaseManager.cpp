@@ -1,5 +1,7 @@
 #include "DatabaseManager.h"
 #include <filesystem>
+#include <fstream>
+#include <sstream>
 #include <string>
 
 DatabaseManager* DatabaseManager::instance = nullptr;
@@ -63,17 +65,30 @@ bool DatabaseManager::initializeDatabase() {
     if (!this->isOpen()) {
         return false;
     }
-    return createTables();
-}
 
-bool DatabaseManager::createTables() {
-    const char* sql = R"(SELECT 1;)";
+    std::filesystem::path sqlFilePath("public/queries/BaseQueries.sql");
+    if (!std::filesystem::exists(sqlFilePath)) {
+        return true;
+    }
 
-    char* errMsg = nullptr;
-    int rc = sqlite3_exec(databaseInstance, sql, nullptr, nullptr, &errMsg);
+    std::ifstream file(sqlFilePath);
+    if (!file.is_open()) {
+        return false;
+    }
+
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    std::string sqlContent = buffer.str();
+    file.close();
+
+    char* errorMessage = nullptr;
+    int rc = sqlite3_exec(databaseInstance, sqlContent.c_str(), nullptr, nullptr, &errorMessage);
 
     if (rc != SQLITE_OK) {
-        sqlite3_free(errMsg);
+        if (errorMessage) {
+            sqlite3_free(errorMessage);
+        }
+
         return false;
     }
 
