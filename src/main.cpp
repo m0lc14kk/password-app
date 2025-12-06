@@ -1,6 +1,6 @@
-#include "app/MainApplication.h"
-#include "app/MainWindow.h"
 #include "database/DatabaseManager.h"
+#include "globals/app/MainApplication.h"
+#include "globals/app/MainWindow.h"
 #include <QLabel>
 #include <QMainWindow>
 
