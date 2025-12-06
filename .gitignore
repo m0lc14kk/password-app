@@ -1,20 +1,47 @@
-/tmp
-/out-tsc
+# IDE files.
+/.idea/
+/.vscode/
+/.vs/
+/.cursor/
 
-/dist
+# Build files.
+/build/
+/out/
+/bin/
+/lib/
 
-/node_modules
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-/.pnp
-.pnp.js
+# CMake and cache.
+/CMakeFiles/
+/.cache/
+/CMakeCache.txt
+/cmake_install.cmake
+/Makefile
+/install_manifest.txt
+/compile_commands.json
 
-package-lock.json
-pnpm-lock.yaml
+# Compilation files.
+*.o
+*.obj
+moc_*
+qrc_*
+ui_*
 
-.vscode/*
+# Qt Creator.
+*.user
+*.user.*
+*.autosave
 
-.env
+# macOS files.
+/**/.DS_Store
+/**/*.dylib
+/**/*.app
 
-databases/database.db
+# Windows files.
+/**/*.exe
+/**/*.dll
+/**/*.pdb
+/**/*.lib
+
+# Linux files.
+/**/*.so
+/**/*.a
