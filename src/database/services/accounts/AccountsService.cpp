@@ -1,5 +1,6 @@
 #include "AccountsService.h"
 #include "../../../globals/managers/data/UUIDManager.h"
+#include "../../../globals/managers/security/EncryptionManager.h"
 #include "../../DatabaseManager.h"
 #include <vector>
 
@@ -16,7 +17,8 @@ std::vector<Account> AccountsService::getAllAccounts() {
 
         account.id = idText ? reinterpret_cast<const char*>(idText) : "";
         account.name = nameText ? reinterpret_cast<const char*>(nameText) : "";
-        account.encryptedSecurityPin = pinText ? reinterpret_cast<const char*>(pinText) : "";
+        account.securityPin =
+            pinText ? EncryptionManager::decrypt(reinterpret_cast<const char*>(pinText)) : "";
         account.avatarId = sqlite3_column_int(stmt, 3);
 
         accounts.push_back(account);
@@ -39,7 +41,8 @@ std::optional<Account> AccountsService::getAccountById(const std::string& id) {
 
         account.id = idText ? reinterpret_cast<const char*>(idText) : "";
         account.name = nameText ? reinterpret_cast<const char*>(nameText) : "";
-        account.encryptedSecurityPin = pinText ? reinterpret_cast<const char*>(pinText) : "";
+        account.securityPin =
+            pinText ? EncryptionManager::decrypt(reinterpret_cast<const char*>(pinText)) : "";
         account.avatarId = sqlite3_column_int(stmt, 3);
         sqlite3_finalize(stmt);
         return account;
@@ -55,6 +58,8 @@ std::optional<Account> AccountsService::createAccount(const AccountCreatePayload
         if (this->getAccountById(id) != std::nullopt)
             continue;
 
+        const std::string encryptedSecurityPin = EncryptionManager::encrypt(payload.securityPin);
+
         sqlite3* database = DatabaseManager::getInstance()->getDatabase();
         sqlite3_stmt* stmt;
         sqlite3_prepare_v2(
@@ -63,7 +68,7 @@ std::optional<Account> AccountsService::createAccount(const AccountCreatePayload
             -1, &stmt, nullptr);
         sqlite3_bind_text(stmt, 1, id.c_str(), id.size(), SQLITE_STATIC);
         sqlite3_bind_text(stmt, 2, payload.name.c_str(), payload.name.size(), SQLITE_STATIC);
-        sqlite3_bind_text(stmt, 3, payload.securityPin.c_str(), payload.securityPin.size(),
+        sqlite3_bind_text(stmt, 3, encryptedSecurityPin.c_str(), encryptedSecurityPin.size(),
                           SQLITE_STATIC);
         sqlite3_bind_int(stmt, 4, payload.avatarId);
         sqlite3_step(stmt);
@@ -72,7 +77,7 @@ std::optional<Account> AccountsService::createAccount(const AccountCreatePayload
         Account account = {
             .id = id,
             .name = payload.name,
-            .encryptedSecurityPin = payload.securityPin,
+            .securityPin = payload.securityPin,
             .avatarId = payload.avatarId,
         };
 
@@ -87,14 +92,15 @@ std::optional<Account> AccountsService::updateAccount(const std::string& id,
     if (this->getAccountById(id) == std::nullopt)
         return std::nullopt;
 
+    const std::string encryptedSecurityPin = EncryptionManager::encrypt(payload.securityPin);
+
     sqlite3* database = DatabaseManager::getInstance()->getDatabase();
     sqlite3_stmt* stmt;
-    sqlite3_prepare_v2(
-        database,
-        "UPDATE accounts SET name = ?, encryptedSecurityPin = ?, avatarId = ? WHERE id = ?", -1,
-        &stmt, nullptr);
+    sqlite3_prepare_v2(database,
+                       "UPDATE accounts SET name = ?, securityPin = ?, avatarId = ? WHERE id = ?",
+                       -1, &stmt, nullptr);
     sqlite3_bind_text(stmt, 1, payload.name.c_str(), payload.name.size(), SQLITE_STATIC);
-    sqlite3_bind_text(stmt, 2, payload.securityPin.c_str(), payload.securityPin.size(),
+    sqlite3_bind_text(stmt, 2, encryptedSecurityPin.c_str(), encryptedSecurityPin.size(),
                       SQLITE_STATIC);
     sqlite3_bind_int(stmt, 3, payload.avatarId);
     sqlite3_bind_text(stmt, 4, id.c_str(), id.size(), SQLITE_STATIC);
@@ -105,7 +111,7 @@ std::optional<Account> AccountsService::updateAccount(const std::string& id,
     Account account = {
         .id = id,
         .name = payload.name,
-        .encryptedSecurityPin = payload.securityPin,
+        .securityPin = payload.securityPin,
         .avatarId = payload.avatarId,
     };
 

@@ -2,9 +2,9 @@
 
 #include <string>
 
-struct Account {
+struct RawAccount {
     std::string id;
     std::string name;
-    std::string securityPin;
+    std::string encryptedSecurityPin;
     int avatarId;
 };
