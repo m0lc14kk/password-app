@@ -3,8 +3,10 @@ CREATE TABLE IF NOT EXISTS accounts (
     name VARCHAR(255) NOT NULL,
     encryptedSecurityPin VARCHAR(255) NOT NULL,
     avatarId INT NOT NULL,
+    role INT NOT NULL,
 
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    CHECK (role IN (0, 1))
 );
 
 CREATE TABLE IF NOT EXISTS passwords (

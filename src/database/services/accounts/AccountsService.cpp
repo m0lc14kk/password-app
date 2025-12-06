@@ -20,6 +20,7 @@ std::vector<Account> AccountsService::getAllAccounts() {
         account.securityPin =
             pinText ? EncryptionManager::decrypt(reinterpret_cast<const char*>(pinText)) : "";
         account.avatarId = sqlite3_column_int(stmt, 3);
+        account.role = static_cast<AccountRole>(sqlite3_column_int(stmt, 4));
 
         accounts.push_back(account);
     }
@@ -44,6 +45,7 @@ std::optional<Account> AccountsService::getAccountById(const std::string& id) {
         account.securityPin =
             pinText ? EncryptionManager::decrypt(reinterpret_cast<const char*>(pinText)) : "";
         account.avatarId = sqlite3_column_int(stmt, 3);
+        account.role = static_cast<AccountRole>(sqlite3_column_int(stmt, 4));
         sqlite3_finalize(stmt);
         return account;
     }
@@ -79,6 +81,7 @@ std::optional<Account> AccountsService::createAccount(const AccountCreatePayload
             .name = payload.name,
             .securityPin = payload.securityPin,
             .avatarId = payload.avatarId,
+            .role = payload.role,
         };
 
         return account;
@@ -113,6 +116,7 @@ std::optional<Account> AccountsService::updateAccount(const std::string& id,
         .name = payload.name,
         .securityPin = payload.securityPin,
         .avatarId = payload.avatarId,
+        .role = payload.role,
     };
 
     return account;

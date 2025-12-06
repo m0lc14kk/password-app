@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AccountRole.h"
 #include <string>
 
 struct Account {
@@ -7,4 +8,5 @@ struct Account {
     std::string name;
     std::string securityPin;
     int avatarId;
+    AccountRole role;
 };
