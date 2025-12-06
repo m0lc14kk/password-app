@@ -71,9 +71,59 @@ jobs:
               uses: actions/checkout@v6
 
             - name: Install dependencies.
+              shell: pwsh
               run: |
-                winget install -e --id Qt.Qt6
-                winget install -e --id Kitware.CMake
+                winget install -e --id Qt.Qt6 --source winget --accept-source-agreements --accept-package-agreements --silent
+                winget install -e --id Kitware.CMake --source winget --accept-source-agreements --accept-package-agreements --silent
+
+            - name: Set Qt6 environment variables.
+              shell: pwsh
+              run: |
+                # Find Qt installation
+                $possiblePaths = @(
+                  "C:\Program Files\Qt",
+                  "C:\Qt",
+                  "$env:ProgramFiles\Qt"
+                )
+
+                $qtPath = $null
+                foreach ($path in $possiblePaths) {
+                  if (Test-Path $path) {
+                    $qtDir = Get-ChildItem $path -Directory -ErrorAction SilentlyContinue | Sort-Object Name -Descending | Select-Object -First 1
+                    if ($qtDir) {
+                      $qtPath = $qtDir.FullName
+                      break
+                    }
+                  }
+                }
+
+                if ($qtPath) {
+                  # Try different MSVC versions (2022, 2019, etc.)
+                  $msvcVersions = @("msvc2022_64", "msvc2019_64", "msvc2017_64")
+                  $qtBinPath = $null
+                  $qtCmakePath = $null
+
+                  foreach ($msvc in $msvcVersions) {
+                    $testBinPath = Join-Path $qtPath "$msvc\bin"
+                    if (Test-Path $testBinPath) {
+                      $qtBinPath = $testBinPath
+                      $qtCmakePath = Join-Path $qtPath "$msvc\lib\cmake"
+                      break
+                    }
+                  }
+
+                  if ($qtBinPath -and $qtCmakePath) {
+                    echo "QT_DIR=$qtCmakePath" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+                    echo "Qt6_DIR=$qtCmakePath\Qt6" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+                    echo "$qtBinPath" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+                    echo "Qt6 found at: $qtPath"
+                    echo "Using MSVC path: $qtBinPath"
+                  } else {
+                    Write-Error "Qt6 binaries not found. Searched in: $qtPath"
+                  }
+                } else {
+                  Write-Error "Qt6 installation not found in any of the expected paths"
+                }
 
             - name: Configure CMake.
               run: |
@@ -84,5 +134,6 @@ jobs:
                 cmake --build build --config Release
 
             - name: Test executable exists.
+              shell: pwsh
               run: |
-                test -f build/PasswordManager
+                Test-Path build\PasswordManager.exe
