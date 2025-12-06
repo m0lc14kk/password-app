@@ -1,4 +1,5 @@
 #include "AccountsService.h"
+#include "../../../globals/managers/data/UUIDManager.h"
 #include "../../DatabaseManager.h"
 #include <vector>
 
@@ -50,15 +51,77 @@ std::optional<Account> AccountsService::getAccountById(const std::string& id) {
 
 std::optional<Account> AccountsService::createAccount(const AccountCreatePayload& payload) {
     for (int i = 0; i < AccountsService::MAX_CREATION_ATTEMPTS; i++) {
+        const std::string id = UUIDManager::generateUUID();
+        if (this->getAccountById(id) != std::nullopt)
+            continue;
+
+        sqlite3* database = DatabaseManager::getInstance()->getDatabase();
+        sqlite3_stmt* stmt;
+        sqlite3_prepare_v2(
+            database,
+            "INSERT INTO accounts (id, name, encryptedSecurityPin, avatarId) VALUES (?, ?, ?, ?)",
+            -1, &stmt, nullptr);
+        sqlite3_bind_text(stmt, 1, id.c_str(), id.size(), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 2, payload.name.c_str(), payload.name.size(), SQLITE_STATIC);
+        sqlite3_bind_text(stmt, 3, payload.securityPin.c_str(), payload.securityPin.size(),
+                          SQLITE_STATIC);
+        sqlite3_bind_int(stmt, 4, payload.avatarId);
+        sqlite3_step(stmt);
+        sqlite3_finalize(stmt);
+
+        Account account = {
+            .id = id,
+            .name = payload.name,
+            .encryptedSecurityPin = payload.securityPin,
+            .avatarId = payload.avatarId,
+        };
+
+        return account;
     }
 
     return std::nullopt;
 }
 
-std::optional<Account> AccountsService::updateAccount(const AccountUpdatePayload& payload) {
-    return std::nullopt;
+std::optional<Account> AccountsService::updateAccount(const std::string& id,
+                                                      const AccountUpdatePayload& payload) {
+    if (this->getAccountById(id) == std::nullopt)
+        return std::nullopt;
+
+    sqlite3* database = DatabaseManager::getInstance()->getDatabase();
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(
+        database,
+        "UPDATE accounts SET name = ?, encryptedSecurityPin = ?, avatarId = ? WHERE id = ?", -1,
+        &stmt, nullptr);
+    sqlite3_bind_text(stmt, 1, payload.name.c_str(), payload.name.size(), SQLITE_STATIC);
+    sqlite3_bind_text(stmt, 2, payload.securityPin.c_str(), payload.securityPin.size(),
+                      SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 3, payload.avatarId);
+    sqlite3_bind_text(stmt, 4, id.c_str(), id.size(), SQLITE_STATIC);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    Account account = {
+        .id = id,
+        .name = payload.name,
+        .encryptedSecurityPin = payload.securityPin,
+        .avatarId = payload.avatarId,
+    };
+
+    return account;
 }
 
 bool AccountsService::deleteAccount(const std::string& id) {
-    return false;
+    if (this->getAccountById(id) == std::nullopt)
+        return false;
+
+    sqlite3* database = DatabaseManager::getInstance()->getDatabase();
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(database, "DELETE FROM accounts WHERE id = ?", -1, &stmt, nullptr);
+    sqlite3_bind_text(stmt, 1, id.c_str(), id.size(), SQLITE_STATIC);
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    return true;
 }

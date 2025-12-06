@@ -4,6 +4,6 @@
 
 struct AccountUpdatePayload {
     std::string name;
-    std::string encryptedSecurityPin;
+    std::string securityPin;
     int avatarId;
 };

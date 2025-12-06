@@ -15,6 +15,7 @@ public:
     std::vector<Account> getAllAccounts();
     std::optional<Account> getAccountById(const std::string& id);
     std::optional<Account> createAccount(const AccountCreatePayload& payload);
-    std::optional<Account> updateAccount(const AccountUpdatePayload& payload);
+    std::optional<Account> updateAccount(const std::string& id,
+                                         const AccountUpdatePayload& payload);
     bool deleteAccount(const std::string& id);
 };
