@@ -1,9 +1,12 @@
 #include "app/MainApplication.h"
 #include "app/MainWindow.h"
+#include "database/DatabaseManager.h"
 #include <QLabel>
 #include <QMainWindow>
 
 int main(int argc, char* argv[]) {
+    DatabaseManager::init();
+
     MainApplication::init(argc, argv);
     MainApplication* app = MainApplication::getInstance();
 

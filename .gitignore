@@ -10,6 +10,9 @@
 /bin/
 /lib/
 
+# SQLite files.
+/public/database/passwords.db
+
 # CMake and cache.
 /CMakeFiles/
 /.cache/
