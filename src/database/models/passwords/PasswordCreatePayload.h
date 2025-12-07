@@ -3,8 +3,10 @@
 #include <string>
 
 struct PasswordCreatePayload {
-    std::string name;
-    std::string password;
+    std::string accountId;
+    std::string title;
+    std::string username;
     std::string url;
+    std::string password;
     unsigned int securityPin;
 };
