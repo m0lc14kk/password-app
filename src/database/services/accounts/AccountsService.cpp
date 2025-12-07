@@ -57,7 +57,7 @@ std::optional<Account> AccountsService::getAccountById(const std::string& id) {
 std::optional<Account> AccountsService::createAccount(const AccountCreatePayload& payload) {
     for (int i = 0; i < AccountsService::MAX_CREATION_ATTEMPTS; i++) {
         const std::string id = UUIDManager::generateUUID();
-        if (this->getAccountById(id) != std::nullopt)
+        if (AccountsService::getAccountById(id) != std::nullopt)
             continue;
 
         const std::string encryptedSecurityPin = EncryptionManager::encrypt(payload.securityPin);
@@ -92,7 +92,7 @@ std::optional<Account> AccountsService::createAccount(const AccountCreatePayload
 
 std::optional<Account> AccountsService::updateAccount(const std::string& id,
                                                       const AccountUpdatePayload& payload) {
-    if (this->getAccountById(id) == std::nullopt)
+    if (AccountsService::getAccountById(id) == std::nullopt)
         return std::nullopt;
 
     const std::string encryptedSecurityPin = EncryptionManager::encrypt(payload.securityPin);
@@ -123,7 +123,7 @@ std::optional<Account> AccountsService::updateAccount(const std::string& id,
 }
 
 bool AccountsService::deleteAccount(const std::string& id) {
-    if (this->getAccountById(id) == std::nullopt)
+    if (AccountsService::getAccountById(id) == std::nullopt)
         return false;
 
     sqlite3* database = DatabaseManager::getInstance()->getDatabase();

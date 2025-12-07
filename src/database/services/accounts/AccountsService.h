@@ -12,10 +12,10 @@ class AccountsService : public BaseDatabaseService {
 public:
     ~AccountsService() = default;
 
-    std::vector<Account> getAllAccounts();
-    std::optional<Account> getAccountById(const std::string& id);
-    std::optional<Account> createAccount(const AccountCreatePayload& payload);
-    std::optional<Account> updateAccount(const std::string& id,
-                                         const AccountUpdatePayload& payload);
-    bool deleteAccount(const std::string& id);
+    static std::vector<Account> getAllAccounts();
+    static std::optional<Account> getAccountById(const std::string& id);
+    static std::optional<Account> createAccount(const AccountCreatePayload& payload);
+    static std::optional<Account> updateAccount(const std::string& id,
+                                                const AccountUpdatePayload& payload);
+    static bool deleteAccount(const std::string& id);
 };
