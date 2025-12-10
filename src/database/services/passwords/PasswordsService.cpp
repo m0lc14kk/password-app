@@ -82,8 +82,8 @@ std::optional<Password> PasswordsService::createPassword(const PasswordCreatePay
             .accountId = payload.accountId,
             .title = payload.title,
             .username = payload.username,
-            .url = payload.url,
             .password = payload.password,
+            .url = payload.url,
             .securityPin = payload.securityPin,
         };
 
@@ -124,8 +124,8 @@ std::optional<Password> PasswordsService::updatePassword(const std::string& id,
         .accountId = payload.accountId,
         .title = payload.title,
         .username = payload.username,
-        .url = payload.url,
         .password = payload.password,
+        .url = payload.url,
         .securityPin = payload.securityPin,
     };
 
