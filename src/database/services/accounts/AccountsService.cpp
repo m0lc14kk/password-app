@@ -2,6 +2,7 @@
 #include "../../../globals/managers/data/UUIDManager.h"
 #include "../../../globals/managers/security/EncryptionManager.h"
 #include "../../DatabaseManager.h"
+#include "AccountsRoleConverter.h"
 #include <vector>
 
 std::vector<Account> AccountsService::getAllAccounts() {
@@ -20,8 +21,7 @@ std::vector<Account> AccountsService::getAllAccounts() {
         account.securityPin =
             pinText ? EncryptionManager::decrypt(reinterpret_cast<const char*>(pinText)) : "";
         account.avatarId = sqlite3_column_int(stmt, 3);
-        account.role = static_cast<AccountRole>(sqlite3_column_int(stmt, 4));
-
+        account.role = AccountsRoleConverter::toAccountRole(sqlite3_column_int(stmt, 4));
         accounts.push_back(account);
     }
 
@@ -45,7 +45,7 @@ std::optional<Account> AccountsService::getAccountById(const std::string& id) {
         account.securityPin =
             pinText ? EncryptionManager::decrypt(reinterpret_cast<const char*>(pinText)) : "";
         account.avatarId = sqlite3_column_int(stmt, 3);
-        account.role = static_cast<AccountRole>(sqlite3_column_int(stmt, 4));
+        account.role = AccountsRoleConverter::toAccountRole(sqlite3_column_int(stmt, 4));
         sqlite3_finalize(stmt);
         return account;
     }
@@ -64,15 +64,16 @@ std::optional<Account> AccountsService::createAccount(const AccountCreatePayload
 
         sqlite3* database = DatabaseManager::getInstance()->getDatabase();
         sqlite3_stmt* stmt;
-        sqlite3_prepare_v2(
-            database,
-            "INSERT INTO accounts (id, name, encryptedSecurityPin, avatarId) VALUES (?, ?, ?, ?)",
-            -1, &stmt, nullptr);
+        sqlite3_prepare_v2(database,
+                           "INSERT INTO accounts (id, name, encryptedSecurityPin, avatarId, role) "
+                           "VALUES (?, ?, ?, ?, ?)",
+                           -1, &stmt, nullptr);
         sqlite3_bind_text(stmt, 1, id.c_str(), id.size(), SQLITE_STATIC);
         sqlite3_bind_text(stmt, 2, payload.name.c_str(), payload.name.size(), SQLITE_STATIC);
         sqlite3_bind_text(stmt, 3, encryptedSecurityPin.c_str(), encryptedSecurityPin.size(),
                           SQLITE_STATIC);
         sqlite3_bind_int(stmt, 4, payload.avatarId);
+        sqlite3_bind_int(stmt, 5, AccountsRoleConverter::toDatabaseRole(payload.role));
         sqlite3_step(stmt);
         sqlite3_finalize(stmt);
 
@@ -99,14 +100,16 @@ std::optional<Account> AccountsService::updateAccount(const std::string& id,
 
     sqlite3* database = DatabaseManager::getInstance()->getDatabase();
     sqlite3_stmt* stmt;
-    sqlite3_prepare_v2(database,
-                       "UPDATE accounts SET name = ?, securityPin = ?, avatarId = ? WHERE id = ?",
-                       -1, &stmt, nullptr);
+    sqlite3_prepare_v2(
+        database,
+        "UPDATE accounts SET name = ?, securityPin = ?, avatarId = ?, role = ? WHERE id = ?", -1,
+        &stmt, nullptr);
     sqlite3_bind_text(stmt, 1, payload.name.c_str(), payload.name.size(), SQLITE_STATIC);
     sqlite3_bind_text(stmt, 2, encryptedSecurityPin.c_str(), encryptedSecurityPin.size(),
                       SQLITE_STATIC);
     sqlite3_bind_int(stmt, 3, payload.avatarId);
-    sqlite3_bind_text(stmt, 4, id.c_str(), id.size(), SQLITE_STATIC);
+    sqlite3_bind_int(stmt, 4, AccountsRoleConverter::toDatabaseRole(payload.role));
+    sqlite3_bind_text(stmt, 5, id.c_str(), id.size(), SQLITE_STATIC);
 
     sqlite3_step(stmt);
     sqlite3_finalize(stmt);
